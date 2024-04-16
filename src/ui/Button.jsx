@@ -58,7 +58,7 @@ const Button = styled.button`
   box-shadow:var(--shadow-sm);
   cursor:pointer;
   
-  &:hover {
+  &:hover { // &: select the actual html component 
     background-color: var(--color-brand-700);
   }
 `;
