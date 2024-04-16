@@ -7,6 +7,7 @@ const Heading = styled.h1` // styled. html element
       font-size:3rem;
       font-weight: 600;
       `} //Access to props
+      //the css will format the code if we pass a large list of props that need to styled
   ${props => props.type === "h2" &&  
     css`
       font-size:2rem;
