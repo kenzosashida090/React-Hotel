@@ -1,5 +1,8 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
-
+import {formatCurrency} from "../../utils/helpers"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCabins";
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -38,3 +41,31 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+
+function CabinRow({cabin}) {
+
+  const {name, max_capacity, regular_price, discount, image, id:cabinId} = cabin
+  const queryClient = useQueryClient(); // Get the instance of the queryClient 
+  const {isLoading:isDeliting, mutate}=useMutation({
+    mutationFn:deleteCabin, // (id)=> deleteCabin(id) the same thing
+    onSuccess:()=>{ 
+      alert("Cabin successfully  deleted");
+      queryClient.invalidateQueries({
+        queryKey:["cabins"]
+      }) //InvalidateQueries will tell to react query that the cache is not valid anymore so it needs to fetch the data again
+    }, //tell react query  what to do as soon as the mutation was successfull
+    onError:(err)=> alert(err.message),
+  }) // useMutation hook (reactQuery) allows to mutate data like delete,update an item, this will return a isLoading state and a mutate function taht we can use on the button
+  return (
+    <TableRow role="row">
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {max_capacity} guests</div>
+      <Price>{formatCurrency(regular_price)}</Price>
+      <Discount>{formatCurrency(discount)}</Discount>
+      <button disabled={isDeliting} onClick={()=>mutate(cabinId)}>Delete</button>
+    </TableRow>
+  )
+}
+
+export default CabinRow
