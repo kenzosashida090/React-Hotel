@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {formatCurrency} from "../../utils/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCabin } from "../../services/apiCabins";
+import toast from "react-hot-toast";
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -49,12 +50,12 @@ function CabinRow({cabin}) {
   const {isLoading:isDeliting, mutate}=useMutation({
     mutationFn:deleteCabin, // (id)=> deleteCabin(id) the same thing
     onSuccess:()=>{ 
-      alert("Cabin successfully  deleted");
+      toast.success("Cabin successfully  deleted");
       queryClient.invalidateQueries({
-        queryKey:["cabins"]
+        queryKey:["cabin"]
       }) //InvalidateQueries will tell to react query that the cache is not valid anymore so it needs to fetch the data again
     }, //tell react query  what to do as soon as the mutation was successfull
-    onError:(err)=> alert(err.message),
+    onError:(err)=> toast.error(err.message),
   }) // useMutation hook (reactQuery) allows to mutate data like delete,update an item, this will return a isLoading state and a mutate function taht we can use on the button
   return (
     <TableRow role="row">

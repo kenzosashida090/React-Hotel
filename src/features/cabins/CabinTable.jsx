@@ -29,7 +29,7 @@ const TableHeader = styled.header`
 
 function CabinTable() {
  const {isLoading, data: cabins, error} =  useQuery({
-    queryKey: ["cabins"], //identify the data that we want to query
+    queryKey: ["cabin"], //identify the data that we want to query
     queryFn: getCabins //Function that actually queries the data return a promise
 
   })
