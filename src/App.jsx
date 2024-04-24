@@ -9,27 +9,38 @@ import Login from "./pages/Login"
 import PageNotFound from "./pages/PageNotFound"
 import GlobalStyles from "./styles/GlobalStyles"
 import AppLayout from "./ui/AppLayout"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+ const queryClient = new QueryClient(
+  {
+    defaultOptions:{
+      queries:{
+        staleTime: 60 * 1000 //(60000ms = 1min)The ammount of time that the data of the cache will be stay fresh (stay valid until is refresh again)
+      }
+    }
+  }
+ ) //creating a ne client for react query
 function App() {
-
   return (
-    <>
-    <GlobalStyles />
-    <BrowserRouter>
-      <Routes>
-      <Route element={<AppLayout />}>
-        <Route index element={<Navigate replace to="dashboard"/>} /> {/*Index will set as default that path route */}
-        <Route  path="dashboard" element={<Dashboard />} /> 
-        <Route  path="bookings" element={<Bookings />} />
-        <Route  path="cabins" element={<Cabins />} />
-        <Route  path="users" element={<Users />} />
-        <Route  path="settings" element={<Settings />} />
-        <Route  path="account" element={<Account />} />
-      </Route>
-        <Route  path="login" element={<Login />} />
-        <Route  path="*" element={<PageNotFound />} />
-      </Routes>
-    </BrowserRouter>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} /> {/*React query devtols to manage and test */}
+      <GlobalStyles />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AppLayout />}> {/** Setting the layout for every child that it is inside this Route Component */}
+            <Route index element={<Navigate replace to="dashboard"/>} /> {/*Index will set as default that path route */}
+            <Route  path="dashboard" element={<Dashboard />} /> 
+            <Route  path="bookings" element={<Bookings />} />
+            <Route  path="cabins" element={<Cabins />} />
+            <Route  path="users" element={<Users />} />
+            <Route  path="settings" element={<Settings />} />
+            <Route  path="account" element={<Account />} />
+          </Route>
+          <Route  path="login" element={<Login />} />
+          <Route  path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   )
 }
 
