@@ -5,6 +5,10 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createCabin } from "../../services/apiCabins";
+import toast from "react-hot-toast";
 
 const FormRow = styled.div`
   display: grid;
@@ -43,44 +47,60 @@ const Error = styled.span`
 `;
 
 function CreateCabinForm() {
+  const {register, handleSubmit,reset} = useForm(); // react-hook-form
+  const queryClient = useQueryClient(); // Get the isntance of the queryClient to re render whenever whe create a new cabin 
+  const {mutate,isLoading} = useMutation({ //Create a mutation to create a new cabin
+    mutationFn: createCabin,
+    onSuccess: ()=> {
+      toast.success("New cabin successfully created")
+      queryClient.invalidateQueries({queryKey:["cabin"]}) // invalidateQueries trigger a new render and updated the ui
+      reset();
+    },
+    onError: (error)=> toast.error(error.message)
+  })
+  function onSubmit(data) { //the react hook form will pass an argument with all the data input inside the function
+
+    mutate(data)
+  }
+  //1) The first step that we follow is to register all the form inputs
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" />
+        <Input type="text" id="name" {...register("name")} />
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" />
+        <Label htmlFor="max_capacity">Maximum capacity</Label>
+        <Input type="number" id="max_capacity" {...register("max_capacity")} />
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" />
+        <Label htmlFor="regular_price">Regular price</Label>
+        <Input type="number" id="regular_price" {...register("regular_price")} />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="discount">Discount</Label>
-        <Input type="number" id="discount" defaultValue={0} />
+        <Input type="number" id="discount" defaultValue={0} {...register("discount")}  />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" defaultValue="" />
+        <Textarea type="number" id="description" defaultValue="" {...register("number")} />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput id="image" accept="image/*" />
+        <FileInput id="image" accept="image/*"  />
       </FormRow>
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset">{/*type="reset"  resets the form but it will not work as a suibmit bnutton */}
           Cancel
         </Button>
-        <Button>Edit cabin</Button>
+        <Button disabled={isLoading}>Add cabin</Button>
       </FormRow>
     </Form>
   );
