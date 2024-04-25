@@ -39,8 +39,7 @@ const Error = styled.span`
 function FormRow({label,error,children}) {
     //the children will be the Input component, to engage to the label we need the id of the input element, we can access it with 
     //the props but only in this case cause only receive one children component
-    console.log("========================>", children.props)
-
+    
     return (
         <StyledFormRow>
           { label && <Label htmlFor={children.props.id}>{label}</Label>} {/* Accessing  the childrens's prop */}
