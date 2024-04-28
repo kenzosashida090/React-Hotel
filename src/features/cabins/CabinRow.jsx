@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import {formatCurrency} from "../../utils/helpers"
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin } from "../../services/apiCabins";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
+import useDeleteCabin from "./useDeleteCabin";
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -48,17 +46,7 @@ const Discount = styled.div`
 function CabinRow({cabin}) {
   const [showForm, setShowForm] = useState(false)
   const {name, max_capacity, regular_price, discount, image, id:cabinId} = cabin
-  const queryClient = useQueryClient(); // Get the instance of the queryClient 
-  const {isLoading:isDeliting, mutate}=useMutation({
-    mutationFn:deleteCabin, // (id)=> deleteCabin(id) the same thing
-    onSuccess:()=>{ 
-      toast.success("Cabin successfully  deleted");
-      queryClient.invalidateQueries({
-        queryKey:["cabin"]
-      }) //InvalidateQueries will tell to react query that the cache is not valid anymore so it needs to fetch the data again
-    }, //tell react query  what to do as soon as the mutation was successfull
-    onError:(err)=> toast.error(err.message),
-  }) // useMutation hook (reactQuery) allows to mutate data like delete,update an item, this will return a isLoading state and a mutate function taht we can use on the button
+  const {isDeleting,deleteCabin} = useDeleteCabin()
   return (
     <>
     <TableRow role="row">
@@ -66,10 +54,10 @@ function CabinRow({cabin}) {
       <Cabin>{name}</Cabin>
       <div>Fits up to {max_capacity} guests</div>
       <Price>{formatCurrency(regular_price)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
+      {discount ?<Discount>{formatCurrency(discount)}</Discount> : <span>&mdash;</span>}
       <div>
         <button onClick={()=>setShowForm((prev)=> !prev)}>Edit</button>
-        <button disabled={isDeliting} onClick={()=>mutate(cabinId)}>Delete</button>
+        <button disabled={isDeleting} onClick={()=>deleteCabin(cabinId)}>Delete</button>
       </div>
     </TableRow>
     

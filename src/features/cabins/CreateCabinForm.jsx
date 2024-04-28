@@ -1,8 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEditCabin } from "../../services/apiCabins";
-import toast from "react-hot-toast";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
@@ -10,6 +7,8 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import styled from "styled-components";
+import useCreateCabin from "./useCreateCabin";
+import useEditCabin from "./useEditCabin";
 
 const RFormRow = styled.div`
   display: grid;
@@ -40,6 +39,8 @@ const RFormRow = styled.div`
 
 
 function CreateCabinForm({cabinToEdit ={}}) {
+  const {isCreating, createCabin} = useCreateCabin()
+  const {isEditing, editCabin} = useEditCabin()
   const {id:editId, ...editValues} = cabinToEdit // to rename a single propetie we spread the entire cabinToEdit object and the we spread the value that we want to rename
   const isEditSession = Boolean(editId) // We create this constant to cerify if we want to edit a cabin or create a form this will return a boolean value
   const {register, handleSubmit,reset, getValues, formState} = useForm({
@@ -47,33 +48,28 @@ function CreateCabinForm({cabinToEdit ={}}) {
   }); // react-hook-form
   console.log("cabin to edit",cabinToEdit)
   const {errors} = formState // get the errors from the form
-  const queryClient = useQueryClient(); // Get the isntance of the queryClient to re render whenever whe create a new cabin 
-  const {mutate:createCabin,isLoading: isCreating} = useMutation({ //Create a mutation to create a new cabin
-    mutationFn: createEditCabin,
-    onSuccess: ()=> {
-      toast.success("New cabin successfully created")
-      queryClient.invalidateQueries({queryKey:["cabin"]}) // invalidateQueries trigger a new render and updated the ui
-      reset();
-    },
-    onError: (error)=> toast.error(error.message)
-  })
-  const {mutate:editCabin,isLoading: isEditing} = useMutation({ //Create a mutation to create a new cabin
-    mutationFn: ({newCabin,id})=>createEditCabin(newCabin,id), // to accept more than one argument unlike the createCabin
-    onSuccess: ()=> {
-      toast.success("Cabin successfully edited")
-      queryClient.invalidateQueries({queryKey:["cabin"]}) // invalidateQueries trigger a new render and updated the ui
-      reset();
-    },
-    onError: (error)=> toast.error(error.message)
-  })
   const isWorking = isCreating || isEditing
   function onSubmit(data) { //the react hook form will pass an argument with all the data input inside the function
     const image = typeof data.image === "string" ? data.image : data.image[0] // making sure that we return a string on the image file
     //mutate(data) 
     //console.log("holaa",data) //to handle the image file we spread out the object and select the file on the object
-    if(isEditSession) editCabin({newCabin:{...data,image},id:editId })
-    else createCabin({...data, image:data.image[0]}) //to handle the image file we spread out the object and select the file on the object
-
+    if(isEditSession) editCabin(
+      {
+        newCabin:{...data,image},
+        id:editId 
+      },
+      {
+        onSuccess : () => reset() // createCabin comes from react query and we can pass an object when on success we get a callback functionj with the argument of data that we return on the API cabins and also que could reset all the form with the hook form
+      }
+    )
+    else createCabin(
+      {
+        ...data, 
+        image:data.image[0] //to handle the image file we spread out the object and select the file on the object
+      }, 
+      {
+        onSuccess : () => reset() // createCabin comes from react query and we can pass an object when on success we get a callback functionj with the argument of data that we return on the API cabins and also que could reset all the form with the hook form
+      }) 
   }
   function onError(errors) {
 
