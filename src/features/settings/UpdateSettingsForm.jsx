@@ -10,9 +10,9 @@ function UpdateSettingsForm(newSettings) {
   const {isEditing, updateSettings} = useUpdateSettings()
   if(isLoading ) return <Spinner/>
   function handleUpdate (e, fieldName){
-    const {value} = e.target.value
+    const {value} = e.target
     if(!value) return
-    updateSettings({[fieldName]: value})
+    updateSettings({[fieldName]: +value})
   }
   return (
     <Form>

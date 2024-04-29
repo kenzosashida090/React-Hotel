@@ -38,7 +38,7 @@ const RFormRow = styled.div`
 `;
 
 
-function CreateCabinForm({cabinToEdit ={}}) {
+function CreateCabinForm({cabinToEdit ={}, onClose}) {
   const {isCreating, createCabin} = useCreateCabin()
   const {isEditing, editCabin} = useEditCabin()
   const {id:editId, ...editValues} = cabinToEdit // to rename a single propetie we spread the entire cabinToEdit object and the we spread the value that we want to rename
@@ -68,7 +68,10 @@ function CreateCabinForm({cabinToEdit ={}}) {
         image:data.image[0] //to handle the image file we spread out the object and select the file on the object
       }, 
       {
-        onSuccess : () => reset() // createCabin comes from react query and we can pass an object when on success we get a callback functionj with the argument of data that we return on the API cabins and also que could reset all the form with the hook form
+        onSuccess : () =>{ 
+          reset()
+          onClose()
+        } // createCabin comes from react query and we can pass an object when on success we get a callback functionj with the argument of data that we return on the API cabins and also que could reset all the form with the hook form
       }) 
   }
   function onError(errors) {
@@ -76,7 +79,7 @@ function CreateCabinForm({cabinToEdit ={}}) {
   }
   //1) The first step that we follow is to register all the form inputs
   return (
-    <Form onSubmit={handleSubmit(onSubmit,onError )}> {/** we can pass two fn to the handleSubmit, the onSubmit handler  and the handleError */}
+    <Form onSubmit={handleSubmit(onSubmit,onError )} type={onClose ? "modal" : "regular"}> {/** we can pass two fn to the handleSubmit, the onSubmit handler  and the handleError */}
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input disabled={isWorking} type="text" id="name" {...register("name",
           {
@@ -115,7 +118,7 @@ function CreateCabinForm({cabinToEdit ={}}) {
 
       <RFormRow label="button">
         {/* type is an HTML attribute! */}
-        <Button disabled={isWorking}  variation="secondary" type="reset">{/*type="reset"  resets the form but it will not work as a suibmit bnutton */}
+        <Button onClick={onClose} disabled={isWorking}  variation="secondary" type="reset">{/*type="reset"  resets the form but it will not work as a suibmit bnutton */}
           Cancel
         </Button>
         <Button disabled={isWorking}>{ isEditSession ? "Edit Cabin" : "Add cabin"  }</Button>

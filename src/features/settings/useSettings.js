@@ -6,5 +6,6 @@ export function useSettings (){
         queryFn:getSettings,
 
     }) 
+
     return{ isLoading, error, settings}
 }

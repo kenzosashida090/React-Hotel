@@ -1,5 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
-
+import { IoCloseOutline } from "react-icons/io5";
+import { createPortal } from "react-dom";
 const StyledModal = styled.div`
   position: fixed;
   top: 50%;
@@ -10,6 +13,7 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
+ 
 `;
 
 const Overlay = styled.div`
@@ -48,3 +52,20 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+
+function Modal({children}) {
+  //The main use of Portal is the reusability of this components maybe in some other place the overlfow will exist and then will be needed more css
+  return createPortal ( //createPortal allow react to place component anywere on the DOM 
+    <Overlay>
+      <StyledModal>
+        <Button><IoCloseOutline/></Button>
+        <div>
+          {children}
+        </div>
+      </StyledModal>
+    </Overlay>,
+    document.body // the place were we want to render this component
+  )
+}
+
+export default Modal
