@@ -3,7 +3,6 @@
 import styled from "styled-components";
 import { IoCloseOutline } from "react-icons/io5";
 import { createPortal } from "react-dom";
-import { cloneElement, createContext, useContext, useState } from "react";
 const StyledModal = styled.div`
   position: fixed;
   top: 50%;
@@ -53,46 +52,20 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
-//1. Create Context 
 
-const ModalContext = createContext()
-
-function Modal({children}){ //2.Create the parent component
-  const [openName, setOpenName] = useState('')
-
-  const close = () =>setOpenName("")
-  const open = setOpenName
-
-  return (
-  <ModalContext.Provider value={{openName,close, open}}>
-    {children}
-  </ModalContext.Provider>)
-} 
-function Open ({children,opens: opensWindowName}){
-  const {open } = useContext(ModalContext)
-  return cloneElement(children, {onClick : ()=> open(opensWindowName)})
-  //since we can not access to the button that opens the modal this is a tecnique 
-  //that allows us to clone the children element and add some props  to it
-}
-function Window({children,name}) {
+function Modal({children}) {
   //The main use of Portal is the reusability of this components maybe in some other place the overlfow will exist and then will be needed more css
-  const {openName, close} = useContext(ModalContext)
-  if (name !== openName) return null
   return createPortal ( //createPortal allow react to place component anywere on the DOM 
     <Overlay>
       <StyledModal>
-        <Button onClick={close}><IoCloseOutline/></Button> {/**Close function from the context */}
+        <Button><IoCloseOutline/></Button>
         <div>
-          {/** As same as the button to open the modal we need to find a way to pass the function to close the modal */}
-          {/** Clone the children element to pass the close  fn as a prop*/}
-
-          {cloneElement(children, {onClose:close})}
+          {children}
         </div>
       </StyledModal>
     </Overlay>,
     document.body // the place were we want to render this component
   )
 }
-Modal.Open = Open
-Modal.Window = Window
+
 export default Modal
