@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { IoCloseOutline } from "react-icons/io5";
 import { createPortal } from "react-dom";
 import { cloneElement, createContext, useContext, useState } from "react";
+import {useClickOutside} from "../hooks/useClickOutside";
 const StyledModal = styled.div`
   position: fixed;
   top: 50%;
@@ -59,7 +61,8 @@ const ModalContext = createContext()
 
 function Modal({children}){ //2.Create the parent component
   const [openName, setOpenName] = useState('')
-
+  
+ 
   const close = () =>setOpenName("")
   const open = setOpenName
 
@@ -77,10 +80,12 @@ function Open ({children,opens: opensWindowName}){
 function Window({children,name}) {
   //The main use of Portal is the reusability of this components maybe in some other place the overlfow will exist and then will be needed more css
   const {openName, close} = useContext(ModalContext)
+  const ref = useClickOutside(close)
+  
   if (name !== openName) return null
   return createPortal ( //createPortal allow react to place component anywere on the DOM 
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <Button onClick={close}><IoCloseOutline/></Button> {/**Close function from the context */}
         <div>
           {/** As same as the button to open the modal we need to find a way to pass the function to close the modal */}

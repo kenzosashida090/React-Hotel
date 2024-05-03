@@ -46,7 +46,7 @@ function CreateCabinForm({cabinToEdit ={}, onClose}) {
   const {register, handleSubmit,reset, getValues, formState} = useForm({
     defaultValues: isEditSession ? editValues : {}, // if we want to update a cabin we pass the default values of the cabin that we cant too edit
   }); // react-hook-form
-  console.log("cabin to edit",cabinToEdit)
+  
   const {errors} = formState // get the errors from the form
   const isWorking = isCreating || isEditing
   function onSubmit(data) { //the react hook form will pass an argument with all the data input inside the function
