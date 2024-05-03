@@ -88,7 +88,12 @@ function Row({children}){
     </StyledRow>
   )
 }
-function Body({children}){}
+function Body({data,render}){
+  if(!data.length) return <Empty>No data Show at the moment</Empty>
+  return <StyledBody>
+    {data.map(render)} {/**Render PROP pattern */}
+  </StyledBody>
+}
 Table.Header = Header
 Table.Row = Row
 Table.Body = Body
