@@ -1,13 +1,11 @@
 import Button from "../../ui/Button"
 import Modal from "../../ui/Modal"
 import CreateCabinForm from "./CreateCabinForm"
-import CabinTable from "./CabinTable"
 
 
 function AddCabin() {
   return(
-    <>
-    
+    <div>
     <Modal>
         <Modal.Open opens="cabin-form">
             <Button>Add new Cabin</Button>
@@ -16,15 +14,7 @@ function AddCabin() {
             <CreateCabinForm/>
         </Modal.Window>
     </Modal>
-    <Modal>
-        <Modal.Open opens="table">
-            <Button>Show Table</Button>
-        </Modal.Open>
-        <Modal.Window name="table">
-            <CabinTable/>
-        </Modal.Window>
-    </Modal>
-    </>
+    </div>
   )
 
 }

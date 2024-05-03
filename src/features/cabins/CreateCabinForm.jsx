@@ -59,7 +59,10 @@ function CreateCabinForm({cabinToEdit ={}, onClose}) {
         id:editId 
       },
       {
-        onSuccess : () => reset() // createCabin comes from react query and we can pass an object when on success we get a callback functionj with the argument of data that we return on the API cabins and also que could reset all the form with the hook form
+        onSuccess : () =>{ 
+          reset() 
+          onClose()
+        } // createCabin comes from react query and we can pass an object when on success we get a callback functionj with the argument of data that we return on the API cabins and also que could reset all the form with the hook form
       }
     )
     else createCabin(
