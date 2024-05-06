@@ -1,4 +1,10 @@
+/* eslint-disable react/prop-types */
+import { createContext, useContext, useState } from "react";
+import { createPortal } from "react-dom";
+
+import { RxDotsVertical } from "react-icons/rx";
 import styled from "styled-components";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const StyledMenu = styled.div`
   display: flex;
@@ -60,3 +66,69 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+const MenusContext = createContext()
+function Menus({children}) {
+  const [openId, setOpenId] = useState()
+  const [position, setPosition] = useState(null)
+  const close = ()=>setOpenId("")
+  const open = setOpenId // pass the fucntion to set the id that open the menu of the cabin row
+ 
+  return (
+    <MenusContext.Provider value={{openId, close,open, position, setPosition}}>
+      {children}
+    </MenusContext.Provider>
+  )
+}
+
+function Toggle({id}) {
+  const {open,close, openId, setPosition} = useContext(MenusContext)
+ 
+  function handleClick (e){
+      openId === "" || openId !== id ? open(id) : close(); // if there is no id or is different of the actual value of the id from the context then open otherwise close the menu
+
+      const rect = e.target.closest("button").getBoundingClientRect(); // to open the menu List component near the button that we toggle
+      //rect returns an object with the position (x,y) of the nearest button with this position whe coould aproach the menu list to that button
+      setPosition({
+        x: window.innerWidth - rect.width - rect.x,
+        y: 8 + rect.height + rect.y
+      })
+    }
+  return <StyledButton onClick={handleClick}>
+    <RxDotsVertical/>
+  </StyledButton>
+}
+function List({id,children}) {
+  const {openId, position,close} = useContext(MenusContext)
+  const ref = useClickOutside(close)
+  if (id !== openId) return null
+  return createPortal(
+    
+
+    <StyledList ref={ref} position={position}>{children}</StyledList>, document.body
+    
+  )
+}
+
+function Button({children,icon, onClick}){
+  const {close} = useContext(MenusContext)
+  function handleClick(){
+    onClick?.()
+    close()
+  }
+  return (
+    <li>
+      <StyledButton onClick={handleClick}>
+        {icon}
+       <span>
+         {children} 
+       </span> 
+      </StyledButton>
+    </li>)
+}
+
+Menus.Menu = StyledMenu
+Menus.Toggle = Toggle
+Menus.List = List
+Menus.Button = Button
+export default Menus
