@@ -47,7 +47,7 @@ function Filter({filterField, options}) {
   }
   return (
     <StyledFilter>
-      {options.map((option)=> <FilterButton active={currentFilter === option.value} key={option.value} onClick={()=>handleClick(option.value)}>{option.label}</FilterButton>)}
+      {options.map((option)=> <FilterButton disabled={currentFilter === option.value} active={currentFilter === option.value } key={option.value} onClick={()=>handleClick(option.value)}>{option.label}</FilterButton>)}
       {/** Manipulate the option string to set the text button, Capitalize the first letter and then the other worrd */}
     </StyledFilter>
   )

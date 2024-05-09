@@ -1,6 +1,22 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
+export async function getBookings(){
+  //select all (*) from the bookuings table
+  //const {data,error} = await supabase.from("bookings").select("*, cabins(name), guests(full_name, email)")//Select everything from the bookings table
+  
+  //select the important stuff for bookings
+  const {data,error} = await supabase.from("bookings")
+  .select("booking_id,created_at,start_date,end_date,num_nights,num_guests,status,total_price, cabins(name), guests(full_name, email)")//Select everything from the bookings table
+  
+  //Bookings table will have a cabins and guest as a foreign key. In this cases we could query the data that we want from supabase
+  //the first argument it is for the bookings table, then we specifie the other
+  //names of the table that are connected to the bookings table
+  
+  
+  if(error) throw new Error("There is no bookings found"); 
+  return data
+}
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")
