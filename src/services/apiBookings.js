@@ -1,19 +1,23 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBookings(){
+export async function getBookings({filter,sortBy}){
   //select all (*) from the bookuings table
   //const {data,error} = await supabase.from("bookings").select("*, cabins(name), guests(full_name, email)")//Select everything from the bookings table
-  
-  //select the important stuff for bookings
-  const {data,error} = await supabase.from("bookings")
+  let query =  supabase.from("bookings")
   .select("booking_id,created_at,start_date,end_date,num_nights,num_guests,status,total_price, cabins(name), guests(full_name, email)")//Select everything from the bookings table
+  //select the important stuff for bookings
   
-  //Bookings table will have a cabins and guest as a foreign key. In this cases we could query the data that we want from supabase
+  //FILTER
+  if(filter) query =  query[filter.method || "eq"](filter.field, filter.value)
+    //Bookings table will have a cabins and guest as a foreign key. In this cases we could query the data that we want from supabase
   //the first argument it is for the bookings table, then we specifie the other
   //names of the table that are connected to the bookings table
   
-  
+  //SORT
+  if(sortBy.field && sortBy.direction) query =  query.order(sortBy.field, {ascending:sortBy.direction === "asc"})
+    
+  const {data,error} =  await query
   if(error) throw new Error("There is no bookings found"); 
   return data
 }
