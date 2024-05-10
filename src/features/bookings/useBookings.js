@@ -1,11 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../../utils/constants";
 
 //To filter the booking section we set the filters right on the Query hook
 // To filter will access to the url
 export function useBookings(){
     //1)Access to the params of the url
+    const queryClient = useQueryClient()
     const [searchParams] = useSearchParams()
     
     
@@ -33,6 +35,19 @@ export function useBookings(){
         //We can think that the queryKey array is a dependencie array
         queryFn:()=>getBookings({filter, sortBy,page})
     }) 
-
+    const pageCount = Math.ceil(count/ PAGE_SIZE)
+    //PRE-FETCHING
+    if(page < pageCount) {
+        queryClient.prefetchQuery({
+            queryKey:["bookings", filter, sortBy, page +1],
+            queryFn: ()=>getBookings({filter, sortBy,  page : page+1})
+        }) // pre-fetching data from the pagination
+    }
+    if(page > 1) {
+        queryClient.prefetchQuery({
+            queryKey:["bookings", filter, sortBy, page - 1],
+            queryFn: ()=>getBookings({filter, sortBy,  page : page - 1})
+        }) // pre-fetching data from the pagination
+    }
     return {isLoading, bookings, error,count}
 }
