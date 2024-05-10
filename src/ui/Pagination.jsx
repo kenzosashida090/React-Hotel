@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../utils/constants";
 const StyledPagination = styled.div`
   width: 100%;
   display: flex;
@@ -58,7 +59,7 @@ const PaginationButton = styled.button`
   }
 `;
 
-const PAGE_SIZE = 10 //use this convention whenever we sue magic numbers (defined numebrs by the coder)
+
 function Pagination({count}) {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentPage = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));

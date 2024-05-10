@@ -1,0 +1,1 @@
+export const PAGE_SIZE = 10 //use this convention whenever we sue magic numbers (defined numebrs by the coder)

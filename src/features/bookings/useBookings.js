@@ -7,7 +7,8 @@ import { useSearchParams } from "react-router-dom";
 export function useBookings(){
     //1)Access to the params of the url
     const [searchParams] = useSearchParams()
-
+    
+    
     // Filter
     const filteredValue = searchParams.get("status");
     const filter = !filteredValue || filteredValue === "all" ? null: {field:"status", value:filteredValue}
@@ -19,16 +20,19 @@ export function useBookings(){
      const sortByRaw = searchParams.get("sortBy") || "start_date-desc"
      const [field, direction] = sortByRaw.split("-")
     
-     const sortBy = {field,direction}
+    const sortBy = {field,direction}
+    
+    // PAGINATION
+    const page = !searchParams.get("page") ? 1: Number(searchParams.get("page"));
     const {
         isLoading,  // Are we currently loading,
-        data:bookings,
+        data:{data:bookings, count} = {}, // set an empty object as a default value to avoid undefined errors
         error
     } = useQuery({
-        queryKey: ["bookings",filter,sortBy], // to update eachtime that we set a filter 
+        queryKey: ["bookings",filter,sortBy,page], // to update eachtime that we set a filter 
         //We can think that the queryKey array is a dependencie array
-        queryFn:()=>getBookings({filter, sortBy})
+        queryFn:()=>getBookings({filter, sortBy,page})
     }) 
 
-    return {isLoading, error , bookings}
+    return {isLoading, bookings, error,count}
 }
