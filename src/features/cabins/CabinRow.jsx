@@ -64,11 +64,13 @@ function CabinRow({cabin}) {
         description
       })
   }
+
   return (
     <Table.Row>
       <Img src={image} />
       <Cabin>{name}</Cabin>
       <div>Fits up to {max_capacity} guests</div>
+      
       <Price>{formatCurrency(regular_price)}</Price>
       {discount ?<Discount>{formatCurrency(discount)}</Discount> : <span>&mdash;</span>}
       <div>
