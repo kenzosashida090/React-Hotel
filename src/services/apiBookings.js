@@ -100,7 +100,7 @@ export async function updateBooking(id, obj) {
   const { data, error } = await supabase
     .from("bookings")
     .update(obj)
-    .eq("id", id)
+    .eq("booking_id", id)
     .select()
     .single();
 

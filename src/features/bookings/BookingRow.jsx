@@ -11,6 +11,7 @@ import Menus from "../../ui/Menus";
 
 import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { HiOutlineArrowDownOnSquare } from "react-icons/hi2";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -89,6 +90,7 @@ function BookingRow({
         <Menus.Toggle id={id}/>
         <Menus.List id={id}>
            <Menus.Button onClick={()=>navigate(`/bookings/${id}`)} icon={<FaRegEye/>} >See details</Menus.Button>
+           { status === "unconfirmed" && <Menus.Button onClick={()=>navigate(`/checkin/${id}`)} icon={<HiOutlineArrowDownOnSquare/>}>Check in</Menus.Button>}
         </Menus.List>
       </Menus.Menu>
     </Table.Row>
