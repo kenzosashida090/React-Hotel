@@ -28,6 +28,7 @@ export async function getBookings({filter,sortBy,page}){
   return {data, count}
 }
 export async function getBooking(id) {
+
   const { data, error } = await supabase
     .from("bookings")
     .select("*, cabins(*), guests(*)")
@@ -97,6 +98,7 @@ export async function getStaysTodayActivity() {
 }
 
 export async function updateBooking(id, obj) {
+  console.log("this is the id that is not returnt", id)
   const { data, error } = await supabase
     .from("bookings")
     .update(obj)

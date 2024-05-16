@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom"
 
 function useBooking() {
     const {bookingId}=useParams() // get the booking id from the url
-
+    console.log("====", bookingId)
     const {
         isLoading,
         data: booking,
