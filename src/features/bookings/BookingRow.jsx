@@ -12,6 +12,7 @@ import Menus from "../../ui/Menus";
 import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowDownOnSquare } from "react-icons/hi2";
+import useCheckout from "../check-in-out/useCheckout";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -60,7 +61,7 @@ function BookingRow({
     "checked-out": "silver",
   };
   const navigate = useNavigate()
-  
+  const {checkout, isCheckingout} = useCheckout()
   return (
     <Table.Row >
       <Cabin>{cabinName}</Cabin>
@@ -91,6 +92,7 @@ function BookingRow({
         <Menus.List id={id}>
            <Menus.Button onClick={()=>navigate(`/bookings/${id}`)} icon={<FaRegEye/>} >See details</Menus.Button>
            { status === "unconfirmed" && <Menus.Button onClick={()=>navigate(`/checkin/${id}`)} icon={<HiOutlineArrowDownOnSquare/>}>Check in</Menus.Button>}
+            {status === "checked-in" && <Menus.Button disabled={isCheckingout} onClick={()=>checkout({bookingId:id})} icon={<HiOutlineArrowDownOnSquare/>}>Check out</Menus.Button> }
         </Menus.List>
       </Menus.Menu>
     </Table.Row>

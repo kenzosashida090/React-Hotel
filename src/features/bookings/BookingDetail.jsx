@@ -13,6 +13,7 @@ import useBooking from "./useBooking";
 import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowDownOnSquare } from "react-icons/hi2";
+import CheckoutButton from "../check-in-out/CheckoutButton";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ function BookingDetail() {
       
       <ButtonGroup oup>
       { status === "unconfirmed" && <Button onClick={()=>navigate(`/checkin/${booking_id}`)} icon={<HiOutlineArrowDownOnSquare/>}>Check in</Button>}
-
+      {status==="checked-in" && <CheckoutButton bookingId={booking_id}/>}
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
