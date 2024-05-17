@@ -41,7 +41,6 @@ function Filter({filterField, options}) {
   const currentFilter = searchParams.get(filterField)  || options.at(0).value // we use this const to set the active button of the current filter
   function handleClick(value) {
     searchParams.set(filterField, value) //we set the param on the url that will be a discount param
-    
     //url = localhost:3000/cabins?discount={value}
     //discount is the param that we set and the value is the query. The query set an specific value of the param discount
     if(searchParams.get("page")) searchParams.set("page", 1)
