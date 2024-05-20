@@ -22,3 +22,7 @@ export async function getCrurentUser(){
   if(err) throw new Error(err.message)
   return data?.user
 }
+
+export async function logout (){
+  await supabase.auth.signOut()
+}

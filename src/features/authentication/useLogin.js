@@ -11,7 +11,7 @@ export function useLogin() {
         onSuccess:(user)=> {
             queryClient.setQueriesData(["user"], user); // set this data to the react query cache.
             //This setQueriesData will avoid to fetch the user session and instead will store in the cahce.
-            navigate('/dashboard')
+            navigate('/dashboard' ,{replace:true})
            
         }, 
         onError : err =>{
