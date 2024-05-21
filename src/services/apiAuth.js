@@ -3,8 +3,10 @@ import supabase from "./supabase"
 export async function signUp ({fullName:full_name, email, password }) {
 
   const {data,error} = await supabase.auth.signUp({email,password, options:{
-    data: {full_name},
-    avatar:"",
+    data: {
+      full_name,
+      avatar:""
+    },
   }})
   if(error) throw new Error(error.message);
   return data;
