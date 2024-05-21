@@ -9,7 +9,7 @@ export function useLogin() {
     const {mutate: login, isLoading} = useMutation({
         mutationFn: ({email,password})=> loginApi({email,password}),
         onSuccess:(user)=> {
-            queryClient.setQueriesData(["user"], user); // set this data to the react query cache.
+            queryClient.setQueryData(["user"], user.user); // set this data to the react query cache.
             //This setQueriesData will avoid to fetch the user session and instead will store in the cahce.
             navigate('/dashboard' ,{replace:true})
            
