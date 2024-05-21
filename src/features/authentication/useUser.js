@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getCrurentUser } from "../../services/apiAuth"
+import { getCurrentUser } from "../../services/apiAuth"
 
 function useUser() {
     const {isLoading, data:user} = useQuery({
         queryKey:["user"],
-        queryFn: getCrurentUser
+        queryFn: getCurrentUser
     })
 
     return{isLoading, user, isAuthenticated:user?.role === "authenticated"}

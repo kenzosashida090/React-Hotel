@@ -1,5 +1,14 @@
 import supabase from "./supabase"
 
+export async function signUp ({fullName:full_name, email, password }) {
+
+  const {data,error} = await supabase.auth.signUp({email,password, options:{
+    data: {full_name},
+    avatar:"",
+  }})
+  if(error) throw new Error(error.message);
+  return data;
+}
 export async function login({email,password}) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -10,7 +19,7 @@ export async function login({email,password}) {
   
 }
 
-export async function getCrurentUser(){
+export async function getCurrentUser(){
   const {data:session} =  await supabase.auth.getSession() //this will seArch for the localstorage if there is a session stored there
   console.log("session", session)
   if(!session) return null
