@@ -3,6 +3,7 @@ import Logut from "../features/authentication/Logut"
 import ButtonIcon from "./ButtonIcon"
 import { CiUser } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle";
 const StyledHeaderMenu = styled.ul`
     display: flex;
     gap:0.4rem;
@@ -13,6 +14,9 @@ function HeaderMenu() {
         <StyledHeaderMenu>
             <li>
                 <ButtonIcon onClick={()=> navigate("/account")}><CiUser/></ButtonIcon>
+            </li>
+            <li>
+                <DarkModeToggle/>
             </li>
             <li>
                 <Logut/>
