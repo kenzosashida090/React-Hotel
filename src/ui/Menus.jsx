@@ -85,6 +85,7 @@ function Toggle({id}) {
   const {open,close, openId, setPosition} = useContext(MenusContext)
  
   function handleClick (e){
+      e.stopPropagation()
       openId === "" || openId !== id ? open(id) : close(); // if there is no id or is different of the actual value of the id from the context then open otherwise close the menu
 
       const rect = e.target.closest("button").getBoundingClientRect(); // to open the menu List component near the button that we toggle
@@ -100,7 +101,7 @@ function Toggle({id}) {
 }
 function List({id,children}) {
   const {openId, position,close} = useContext(MenusContext)
-  const ref = useClickOutside(close)
+  const ref = useClickOutside(close, false)
   if (id !== openId) return null
   return createPortal(
     
