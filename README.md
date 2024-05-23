@@ -11,6 +11,7 @@ This project is mannage with supabase.
 
 To start the project, write in your terminal npm run dev
 
+
 # Dashboard Light mode & Dark mode
 ![plot](./src/assets/dashlight.png)
 ![plot](./src/assets/dashdark.png)
@@ -30,3 +31,14 @@ To start the project, write in your terminal npm run dev
 # Check in
 
 ![plot](./src/assets/check-in.png)
+
+# Login page
+![plot](./src/assets/login.png)
+
+# Create User
+![plot](./src/assets/create_user.png)
+
+# Hotel Settings
+![plot](./src/assets/hotel_settings.png)
+
+
