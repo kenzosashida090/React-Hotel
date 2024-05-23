@@ -79,7 +79,7 @@ function CabinRow({cabin}) {
               <Menus.Toggle id={cabinId}/>
               <Menus.List id={cabinId}>
 
-                <Menus.Button onClick={handleDuplciate} icon={<FaRegCopy/>}>Duplicate</Menus.Button>
+                <Menus.Button disabled={isCreating} onClick={handleDuplciate} icon={<FaRegCopy/>}>Duplicate</Menus.Button>
                 
                 <Modal.Open opens="edit">
                   <Menus.Button icon={<CiEdit/>}>Edit</Menus.Button>

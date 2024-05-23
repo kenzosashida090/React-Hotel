@@ -6,7 +6,7 @@ import { useSettings } from './useSettings';
 import useUpdateSettings from './useUpdateSettings';
 
 function UpdateSettingsForm(newSettings) {
-  const {isLoading, error, settings:{min_book_length, max_book_length, max_guest_per_booking,breakfast_price }= {}} = useSettings(); // we se the settings with a default value to avoid the error of undefined while is fetching the settings data
+  const {isLoading, settings:{min_book_length, max_book_length, max_guest_per_booking,breakfast_price }= {}} = useSettings(); // we se the settings with a default value to avoid the error of undefined while is fetching the settings data
   const {isEditing, updateSettings} = useUpdateSettings()
   if(isLoading ) return <Spinner/>
   function handleUpdate (e, fieldName){

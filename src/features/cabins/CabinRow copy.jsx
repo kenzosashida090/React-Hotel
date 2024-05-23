@@ -98,7 +98,7 @@ function CabinRow({cabin}) {
         <Menus.Menu>
           <Menus.Toggle id={cabinId}/>
           <Menus.List id={cabinId}>
-            <Menus.Button onClick={handleDuplciate} icon={<FaRegCopy/>}>Duplicate</Menus.Button>
+            <Menus.Button disabled={isCreating}  onClick={handleDuplciate} icon={<FaRegCopy/>}>Duplicate</Menus.Button>
             <Menus.Button icon={<CiEdit/>}>Edit</Menus.Button>
             <Menus.Button onClick={deleteCabin} icon={<MdDeleteOutline/>}>Delete</Menus.Button>
           </Menus.List>

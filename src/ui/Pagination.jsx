@@ -10,14 +10,7 @@ const StyledPagination = styled.div`
   justify-content: space-between;
 `;
 
-const P = styled.p`
-  font-size: 1.4rem;
-  margin-left: 0.8rem;
 
-  & span {
-    font-weight: 600;
-  }
-`;
 
 const Buttons = styled.div`
   display: flex;

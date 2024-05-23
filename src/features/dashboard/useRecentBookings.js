@@ -8,7 +8,6 @@ function useRecentBookings() {
 
     const numDay = !searchParams.get("last") ? 7 : Number(searchParams.get( "last" ))
     const queryDate = subDays(new Date(), numDay).toISOString()
-    console.log(queryDate)
     //Substract day from today
     // let date = new Date()
     // date.setDate(date.getDate() - 7)

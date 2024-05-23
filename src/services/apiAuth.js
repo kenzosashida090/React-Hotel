@@ -23,7 +23,6 @@ export async function login({email,password}) {
 
 export async function getCurrentUser(){
   const {data:session} =  await supabase.auth.getSession() //this will seArch for the localstorage if there is a session stored there
-  console.log("session", session)
   if(!session) return null
 
   //Its more secure to fetch the user dat aagain insted of getting diorectlty from the session constant

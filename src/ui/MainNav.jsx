@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoCalendarClearOutline } from "react-icons/io5";
-import { HiOutlineCog6Tooth} from "react-icons/hi2";
 import { IoSettingsOutline } from "react-icons/io5";
 import { PiUsersLight } from "react-icons/pi";
 import { MdOutlineCabin } from "react-icons/md";

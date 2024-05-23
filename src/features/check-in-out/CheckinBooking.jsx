@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 import useCheckin from "./useCheckin";
 import { useSettings } from "../settings/useSettings";
-import CheckoutButton from "./CheckoutButton";
+
 
 const Box = styled.div`
   /* Box */
@@ -41,7 +41,6 @@ function CheckinBooking() {
     num_guests,
     has_breakfast,
     num_nights,
-    status
   } = booking;
   function handleCheckin() {
 
