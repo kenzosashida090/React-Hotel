@@ -23,7 +23,6 @@ const StyledConfirmDelete = styled.div`
 
 function ConfirmDelete({ resourceName, onConfirm, disabled, onClose }) {
   //Remember the modals clone the children component and inyect the onCloseModal prop
-  console.log("this is close modal", onClose)
   return (
     <StyledConfirmDelete>
       <Heading as="h3">Delete {resourceName}</Heading>
